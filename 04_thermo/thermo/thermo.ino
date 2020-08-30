@@ -3,6 +3,7 @@
  
 #include <DHT.h>    // ①ライブラリを読み込み（DHTセンサー）
 const byte TEMP_SNR = 5;  // ②温・湿度センサのピン設定（GPIO5）
+const byte LED_PIN = 13;
  
 DHT dht(TEMP_SNR, DHT11);   // ③DHTクラスをインスタンス化
  
@@ -12,6 +13,7 @@ void setup() {
   Serial.println();   // (見やすくするために改行)
   Serial.println("TempStart");  // ⑥シリアルモニタに開始を表示
   dht.begin();  // ⑦DHTセンサ利用開始
+  pinMode(LED_PIN, OUTPUT);
 }
  
 // ⑧setup完了後、電源OFFまで繰り返し処理
@@ -27,4 +29,9 @@ void loop() {
   Serial.print( " °C / " );
   Serial.print( String(g_humidity) );
   Serial.println(" %");
+  if (g_humidity < 70) {
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
 }
